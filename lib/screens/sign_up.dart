@@ -3,6 +3,8 @@ import 'package:budget_tracker/services/auth_services.dart';
 import 'package:budget_tracker/utils/appvalidator.dart';
 import 'package:flutter/material.dart';
 
+import 'dashboard_screen.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -37,6 +39,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       };
 
       await authService.createUser(data, context);
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const DashboardScreen()));
       setState(() {
         isLoader = false;
       });
