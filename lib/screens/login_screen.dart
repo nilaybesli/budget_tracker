@@ -1,50 +1,40 @@
-import 'package:budget_tracker/screens/login_screen.dart';
-import 'package:budget_tracker/services/auth_services.dart';
-import 'package:budget_tracker/utils/appvalidator.dart';
+import 'package:budget_tracker/screens/sign_up.dart';
 import 'package:flutter/material.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+import '../services/auth_services.dart';
+import '../utils/appvalidator.dart';
+
+class LoginScreen extends StatefulWidget {
+  LoginScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  final _usernameController = TextEditingController();
-
   final _passwordController = TextEditingController();
-
   final _emailController = TextEditingController();
-
-  final _phoneController = TextEditingController();
-
   var authService = AuthServices();
+  var appValidator = AppValidator();
   var isLoader = false;
 
-  void _submitForm() async {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         isLoader = true;
       });
       var data = {
-        "username": _usernameController.text,
         "email": _emailController.text,
         "password": _passwordController.text,
-        "phone": _phoneController.text,
       };
 
-      await authService.createUser(data, context);
+      await authService.login(data, context);
       setState(() {
         isLoader = false;
       });
-      // ScaffoldMessenger.of(_formKey.currentContext!).showSnackBar(const SnackBar(content: Text('Form submitted successfully')));
     }
   }
-
-  var appValidator = AppValidator();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(
                     width: 250,
                     child: Text(
-                      "Create new Account",
+                      "Login Account",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -72,16 +62,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  TextFormField(
-                      controller: _usernameController,
-                      style: const TextStyle(color: Colors.white),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      decoration:
-                          _buildInputDecoration("Username", Icons.person),
-                      validator: appValidator.validateUsername),
                   const SizedBox(
                     height: 16,
                   ),
@@ -95,19 +75,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 16,
                   ),
                   TextFormField(
-                    controller: _phoneController,
-                    style: const TextStyle(color: Colors.white),
-                    keyboardType: TextInputType.emailAddress,
-                    decoration:
-                        _buildInputDecoration("Phone number", Icons.call),
-                    validator: appValidator.validatePhoneNumber,
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  TextFormField(
                     controller: _passwordController,
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.phone,
                     style: const TextStyle(color: Colors.white),
                     decoration: _buildInputDecoration("Password", Icons.lock),
                     validator: appValidator.validatePassword,
@@ -127,24 +96,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: isLoader
                               ? const Center(child: CircularProgressIndicator())
                               : const Text(
-                                  "Create",
+                                  "Log in",
                                   style: TextStyle(fontSize: 20),
                                 ))),
                   const SizedBox(
                     height: 30,
                   ),
                   TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
-                      },
-                      child: const Text(
-                        "Login",
-                        style:
-                            TextStyle(color: Colors.deepOrange, fontSize: 23),
-                      ))
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignUpScreen()));
+                    },
+                    child: const Text(
+                      "Create new account",
+                      style: TextStyle(color: Colors.deepOrange, fontSize: 22),
+                    ),
+                  ),
                 ],
               ),
             )),
