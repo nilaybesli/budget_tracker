@@ -70,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextFormField(
                     controller: _emailController,
                     style: const TextStyle(color: Colors.white),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: _buildInputDecoration("Email", Icons.email),
                     validator: appValidator.validateEmail,
                   ),

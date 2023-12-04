@@ -1,3 +1,4 @@
+import 'package:budget_tracker/widgets/add_transaction_form.dart';
 import 'package:budget_tracker/widgets/transaction_cards.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            content: Text("test"),
+            content: AddTransactionForm(),
           );
         });
   }
