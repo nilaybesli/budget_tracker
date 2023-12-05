@@ -36,11 +36,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         "email": _emailController.text,
         "password": _passwordController.text,
         "phone": _phoneController.text,
+        "remainingAmount":0,
+        "totalCredit":0,
+        "totalDebit":0
       };
 
       await authService.createUser(data, context);
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const DashboardScreen()));
+
       setState(() {
         isLoader = false;
       });

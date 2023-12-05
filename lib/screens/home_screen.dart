@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
       isLogoutLoading = false;
     });
   }
+  final userId = FirebaseAuth.instance.currentUser!.uid;
 
   _dialogBuilder(BuildContext context) {
     return showDialog(
@@ -73,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            HeroCard(),
+            HeroCard(userId: userId,),
             TransactionCards(),
           ],
         ),

@@ -1,11 +1,12 @@
 import 'package:budget_tracker/utils/icons_list.dart';
+import 'package:budget_tracker/widgets/transaction_card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TransactionCards extends StatelessWidget {
   TransactionCards({super.key});
-
-  var appIcons = AppIcons();
 
   @override
   Widget build(BuildContext context) {
@@ -24,87 +25,50 @@ class TransactionCards extends StatelessWidget {
               )
             ],
           ),
-          ListView.builder(
-              itemCount: 4,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                              offset: Offset(0, 10),
-                              color: Colors.grey.withOpacity(0.09),
-                              blurRadius: 10,
-                              spreadRadius: 4)
-                        ]),
-                    child: ListTile(
-                      minVerticalPadding: 10,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 0),
-                      leading: Container(
-                        height: 100,
-                        width: 70 ,
-                        child: Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.green.withOpacity(0.2)),
-                          child: Center(
-                              child: FaIcon(
-                                  appIcons.getExpenseCategoryIcons('home'))),
-                        ),
-                      ),
-                      title: Row(
-                        children: [
-                          Expanded(child: Text("Car rent oct 23")),
-                          Text(
-                            "₺ 8300",
-                            style: TextStyle(
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
-                      ),
-                      subtitle: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Balance",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 13,
-                                ),
-                              ),
-                              Spacer(),
-                              Text(
-                                "₺ 535",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 13,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "25 Oct 4:51 PM",
-                            style: TextStyle(color: Colors.grey),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              })
+          RecentTransactionsList()
         ],
       ),
     );
+  }
+}
+
+class RecentTransactionsList extends StatelessWidget {
+  RecentTransactionsList({
+    super.key,
+  });
+
+  final userId = FirebaseAuth.instance.currentUser!.uid;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection("transactions")
+            .orderBy('timestamp', descending: true).limit(20)
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text("Something went wrong");
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text("Loading");
+          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text("No transctions found."));
+          }
+
+          var data = snapshot.data!.docs;
+
+          return ListView.builder(
+              itemCount: data.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                var cardData = data[index];
+                return TransactionCard(
+                  data: cardData,
+                );
+              });
+        });
   }
 }
