@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class HeroCard extends StatelessWidget {
-  HeroCard({
+  const HeroCard({
     super.key,
     required this.userId,
   });
@@ -12,20 +12,20 @@ class HeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Stream<DocumentSnapshot> _usersStream =
+    final Stream<DocumentSnapshot> usersStream =
     FirebaseFirestore.instance.collection('users').doc(userId).snapshots();
     return StreamBuilder<DocumentSnapshot>(
-        stream: _usersStream,
+        stream: usersStream,
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Text("Something went wrong");
+            return const Text("Something went wrong");
           }
           if (!snapshot.hasData || !snapshot.data!.exists) {
             return const Text("Document does not exist");
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
+            return const Text("Loading");
           }
 
           var data = snapshot.data!.data() as Map<String, dynamic>;
@@ -57,7 +57,7 @@ class Cards extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Total Balance",
                   style: TextStyle(
                       fontSize: 18,
@@ -67,7 +67,7 @@ class Cards extends StatelessWidget {
                 ),
                 Text(
                   "₺ ${data['remainingAmount']}",
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 47,
                       color: Colors.white,
                       height: 1.2,
@@ -77,8 +77,8 @@ class Cards extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 30, bottom: 10, left: 10, right: 10),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.only(top: 30, bottom: 10, left: 10, right: 10),
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30), topRight: Radius.circular(30)),
               color: Colors.white,
@@ -90,7 +90,7 @@ class Cards extends StatelessWidget {
                   heading: 'Credit',
                   amount: '${data['totalCredit']}',
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 CardOne(
@@ -138,7 +138,7 @@ class CardOne extends StatelessWidget {
                     style: TextStyle(color: color, fontSize: 14),
                   ),
                   Text(
-                    "₺ ${amount}",
+                    "₺ $amount",
                     style: TextStyle(
                         color: color,
                         fontSize: 30,
@@ -146,7 +146,7 @@ class CardOne extends StatelessWidget {
                   )
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Icon(

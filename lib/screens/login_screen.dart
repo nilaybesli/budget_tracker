@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../services/auth_services.dart';
 import '../utils/appvalidator.dart';
-import 'dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();

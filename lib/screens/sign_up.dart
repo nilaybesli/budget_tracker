@@ -3,7 +3,6 @@ import 'package:budget_tracker/services/auth_services.dart';
 import 'package:budget_tracker/utils/appvalidator.dart';
 import 'package:flutter/material.dart';
 
-import 'dashboard_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -144,7 +143,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
+                                builder: (context) => const LoginScreen()));
                       },
                       child: const Text(
                         "Login",

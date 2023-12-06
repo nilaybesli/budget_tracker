@@ -3,49 +3,34 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class TransactionCards extends StatelessWidget {
-  const TransactionCards({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: Column(
-        children: [
-          const Row(
-            children: [
-              Text(
-                "Recent Transactions",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              )
-            ],
-          ),
-          RecentTransactionsList()
-        ],
-      ),
-    );
-  }
-}
-
-class RecentTransactionsList extends StatelessWidget {
-  RecentTransactionsList({
-    super.key,
-  });
+class TransactionList extends StatelessWidget {
+  TransactionList(
+      {super.key,
+      required this.category,
+      required this.type,
+      required this.monthyear});
 
   final userId = FirebaseAuth.instance.currentUser!.uid;
+  final String category;
+  final String type;
+  final String monthyear;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('users')
-            .doc(userId)
-            .collection("transactions")
-            .orderBy('timestamp', descending: true).limit(20)
-            .snapshots(),
+    Query query = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('transactions')
+        .orderBy('timestamp', descending: true)
+        .where('monthyear', isEqualTo: monthyear)
+        .where('type', isEqualTo: type);
+
+    if (category != 'All') {
+      query = query.where('category', isEqualTo: category);
+    }
+
+    return FutureBuilder<QuerySnapshot>(
+        future: query.limit(150).get(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Text("Something went wrong");

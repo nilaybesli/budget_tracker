@@ -25,15 +25,15 @@ class TransactionCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                  offset: Offset(0, 10),
+                  offset: const Offset(0, 10),
                   color: Colors.grey.withOpacity(0.09),
                   blurRadius: 10,
                   spreadRadius: 4)
             ]),
         child: ListTile(
           minVerticalPadding: 10,
-          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          leading: Container(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          leading: SizedBox(
             height: 100,
             width: 70,
             child: Container(
@@ -71,17 +71,17 @@ class TransactionCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(
+                  const Text(
                     "Balance",
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 13,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
                     "₺ ${data['remainingAmount']}",
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 13,
                     ),
@@ -90,7 +90,7 @@ class TransactionCard extends StatelessWidget {
               ),
               Text(
                 formattedDate,
-                style: TextStyle(color: Colors.grey),
+                style: const TextStyle(color: Colors.grey),
               )
             ],
           ),

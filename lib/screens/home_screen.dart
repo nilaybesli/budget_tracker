@@ -7,7 +7,7 @@ import '../widgets/hero_card.dart';
 import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
     setState(() {
       isLogoutLoading = false;
     });
@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
+          return const AlertDialog(
             content: AddTransactionForm(),
           );
         });
@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: (() {
           _dialogBuilder(context);
         }),
-        child: Icon(
+        child: const Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             HeroCard(userId: userId,),
-            TransactionCards(),
+            const TransactionCards(),
           ],
         ),
       ),

@@ -23,7 +23,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
   var appValidator = AppValidator();
   var amountEditController = TextEditingController();
   var titleEditController = TextEditingController();
-  var uid = Uuid();
+  var uid = const Uuid();
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -57,7 +57,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
 
       await FirebaseFirestore.instance
           .collection('users')
-          .doc(user!.uid)
+          .doc(user.uid)
           .update({
         "remainingAmount": remainingAmount,
         "totalCredit": totalCredit,
@@ -80,7 +80,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
 
       await FirebaseFirestore.instance
           .collection('users')
-          .doc(user!.uid).collection("transactions").doc(id).set(data);
+          .doc(user.uid).collection("transactions").doc(id).set(data);
 
       Navigator.pop(context);
 
@@ -102,14 +102,14 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
               controller: titleEditController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: appValidator.isEmptyCheck,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
             ),
             TextFormField(
               controller: amountEditController,
               validator: appValidator.isEmptyCheck,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Amount'),
+              decoration: const InputDecoration(labelText: 'Amount'),
             ),
             CategoryDropDown(
               cattype: category,
@@ -123,14 +123,14 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
             ),
             DropdownButtonFormField(
                 value: 'credit',
-                items: [
+                items: const [
                   DropdownMenuItem(
-                    child: Text("Credit"),
                     value: 'credit',
+                    child: Text("Credit"),
                   ),
                   DropdownMenuItem(
-                    child: Text("Debit"),
                     value: 'debit',
+                    child: Text("Debit"),
                   )
                 ],
                 onChanged: (value) {
@@ -140,7 +140,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
                     });
                   }
                 }),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             ElevatedButton(
@@ -150,8 +150,8 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
                   }
                 },
                 child: isLoader
-                    ? Center(child: CircularProgressIndicator())
-                    : Text("Add Transaction"))
+                    ? const Center(child: CircularProgressIndicator())
+                    : const Text("Add Transaction"))
           ],
         ),
       ),

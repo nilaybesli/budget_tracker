@@ -14,7 +14,7 @@ class Db {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text("Add failed"),
+              title: const Text("Add failed"),
               content: Text(error.toString()),
             );
           });
